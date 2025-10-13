@@ -52,7 +52,7 @@ install -d -m 0755 "$CONF_DIR"
 backup_if_exists "$CONF_FILE"
 cat >"$CONF_FILE" <<EOF
 {
-  "server": ["::0", "0.0.0.0"],
+   "server": "0.0.0.0",
   "mode": "$MODE",
   "server_port": $PORT,
   "local_port": 1080,
@@ -129,7 +129,12 @@ sudo ufw allow 8388/tcp
 iptables -I INPUT -p tcp --dport 8388 -j ACCEPT
 iptables -I INPUT -p udp --dport 8388 -j ACCEPT
 
+# safety-fix: если в конфиге массив адресов — заменить на строку 0.0.0.0
+sed -i 's/"server"[[:space:]]*:[[:space:]]*\[[^]]*\]/"server": "0.0.0.0"/' "$CONF_FILE"
+
 # 8) Final status
+
+
 log "Final checks"
 echo "----- systemctl status -----"
 systemctl --no-pager --full status shadowsocks-libev.service | sed -n '1,40p' || true
@@ -143,6 +148,7 @@ journalctl -u shadowsocks-libev.service -n 30 --no-pager || true
 
 ok "Done. Port=${PORT}, Method=${METHOD}, Mode=${MODE}"
 echo "Tip: change password via:  sed -i 's/\"password\": \".*\"/\"password\": \"NEWPASS\"/' ${CONF_FILE} && systemctl restart shadowsocks-libev"
+
 
 
 
