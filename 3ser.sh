@@ -8,7 +8,7 @@ set -euo pipefail
 
 # ====== Config (env overrides allowed) ======
 PORT="${PORT:-8388}"
-PASS="${PASS:-535753}"
+PASS="${PASS:-965856}"
 METHOD="${METHOD:-aes-256-gcm}"
 MODE="${MODE:-tcp_and_udp}"
 TIMEOUT="${TIMEOUT:-60}"
@@ -122,6 +122,12 @@ if sysctl -n net.ipv4.tcp_congestion_control >/dev/null 2>&1; then
   ok "TCP tuning applied (best effort)"
 fi
 
+sudo ufw allow 8388/udp
+sudo ufw allow 8388/tcp
+
+iptables -I INPUT -p tcp --dport 8388 -j ACCEPT
+iptables -I INPUT -p udp --dport 8388 -j ACCEPT
+
 # 8) Final status
 log "Final checks"
 echo "----- systemctl status -----"
@@ -136,4 +142,5 @@ journalctl -u shadowsocks-libev.service -n 30 --no-pager || true
 
 ok "Done. Port=${PORT}, Method=${METHOD}, Mode=${MODE}"
 echo "Tip: change password via:  sed -i 's/\"password\": \".*\"/\"password\": \"NEWPASS\"/' ${CONF_FILE} && systemctl restart shadowsocks-libev"
+
 
