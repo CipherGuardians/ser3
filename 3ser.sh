@@ -4,7 +4,7 @@
 # Usage:
 #   sudo PORT=30001 PASS='MyStrongPass' METHOD=aes-256-gcm ./install-ss-libev.sh
 
-sudo -i
+
 set -euo pipefail
 
 # ====== Config (env overrides allowed) ======
@@ -143,6 +143,7 @@ journalctl -u shadowsocks-libev.service -n 30 --no-pager || true
 
 ok "Done. Port=${PORT}, Method=${METHOD}, Mode=${MODE}"
 echo "Tip: change password via:  sed -i 's/\"password\": \".*\"/\"password\": \"NEWPASS\"/' ${CONF_FILE} && systemctl restart shadowsocks-libev"
+
 
 
 
