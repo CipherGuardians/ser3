@@ -130,7 +130,7 @@ iptables -I INPUT -p tcp --dport 8388 -j ACCEPT
 iptables -I INPUT -p udp --dport 8388 -j ACCEPT
 
 # safety-fix: если в конфиге массив адресов — заменить на строку 0.0.0.0
-sed -i 's/"server"[[:space:]]*:[[:space:]]*\[[^]]*\]/"server": "0.0.0.0"/' "$CONF_FILE"
+#sed -i 's/"server"[[:space:]]*:[[:space:]]*\[[^]]*\]/"server": "0.0.0.0"/' "$CONF_FILE"
 
 # 8) Final status
 
@@ -148,6 +148,7 @@ journalctl -u shadowsocks-libev.service -n 30 --no-pager || true
 
 ok "Done. Port=${PORT}, Method=${METHOD}, Mode=${MODE}"
 echo "Tip: change password via:  sed -i 's/\"password\": \".*\"/\"password\": \"NEWPASS\"/' ${CONF_FILE} && systemctl restart shadowsocks-libev"
+
 
 
 
