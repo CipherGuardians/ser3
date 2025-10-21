@@ -9,7 +9,7 @@ set -euo pipefail
 
 # ====== Config (env overrides allowed) ======
 PORT="${PORT:-8388}"
-PASS="${PASS:-526565}"
+PASS="${PASS:-354579}"
 METHOD="${METHOD:-aes-256-gcm}"
 MODE="${MODE:-tcp_and_udp}"
 TIMEOUT="${TIMEOUT:-60}"
@@ -148,6 +148,7 @@ journalctl -u shadowsocks-libev.service -n 30 --no-pager || true
 
 ok "Done. Port=${PORT}, Method=${METHOD}, Mode=${MODE}"
 echo "Tip: change password via:  sed -i 's/\"password\": \".*\"/\"password\": \"NEWPASS\"/' ${CONF_FILE} && systemctl restart shadowsocks-libev"
+
 
 
 
